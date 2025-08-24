@@ -1,0 +1,53 @@
+#include <bits/stdc++.h> 
+/*   
+    template <typename T = int>
+	class TreeNode
+	{
+		public:
+		T data;
+		TreeNode<T> *left;
+		TreeNode<T> *right;
+
+		TreeNode(T data)
+		{
+			this->data = data;
+			left = NULL;
+			right = NULL;
+		}
+
+		~TreeNode()
+		{
+			if (left != NULL)
+			{
+		  		delete left;
+			}
+			if (right != NULL)
+			{
+			 	delete right;
+			}
+		}
+	};
+*/
+
+bool pathFinder(TreeNode<int> *node, int x, vector<int> &ans){
+	if(!node) return false;
+	if(node->data == x){
+		ans.push_back(node->data);
+		return true;
+	}
+
+	ans.push_back(node->data);
+	if(pathFinder(node->left, x, ans)) return true;
+	if(pathFinder(node->right, x, ans)) return true;
+	ans.pop_back();
+
+	return false;
+}
+
+vector<int> pathInATree(TreeNode<int> *root, int x)
+{
+    // Write your code here.
+	vector<int> ans;
+	pathFinder(root, x, ans);
+	return ans;
+}
