@@ -1,0 +1,71 @@
+#include <string>
+#include <vector>
+
+class Solution {
+public:
+    // A function to check for equality char-by-char after a hash match
+    bool check(const std::string& s1, const std::string& s2, int index) {
+        int n1 = s1.length();
+        for (int i = 0; i < n1; ++i) {
+            if (s1[i] != s2[index + i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Correctly named function for substring search
+    bool isSubstring(const std::string& s1, const std::string& s2) {
+        // s1 is the pattern, s2 is the text
+        int n1 = s1.length();
+        int n2 = s2.length();
+
+        if (n1 > n2) {
+            return false;
+        }
+
+        const long long M = 1e9 + 7; // A large prime modulus
+        const long long N = 257;     // A prime base, larger than alphabet size
+
+        // 1. Pre-calculate h = N^(n1-1) % M for removing the leading character
+        long long h = 1;
+        for (int i = 0; i < n1 - 1; ++i) {
+            h = (h * N) % M;
+        }
+
+        // 2. Calculate the initial hash for the pattern (s1) and the first window of the text (s2)
+        long long patternHash = 0;
+        long long textHash = 0;
+        for (int i = 0; i < n1; ++i) {
+            patternHash = (patternHash * N + s1[i]) % M;
+            textHash = (textHash * N + s2[i]) % M;
+        }
+
+        // 3. Slide the window over the text one by one
+        for (int i = 0; i <= n2 - n1; ++i) {
+            // Check if hashes match for the current window
+            // If they match, perform a character-by-character check to avoid collisions
+            if (patternHash == textHash) {
+                if (check(s1, s2, i)) {
+                    return true;
+                }
+            }
+
+            // 4. Calculate hash for the next window:
+            // Remove leading digit, add trailing digit
+            if (i < n2 - n1) {
+                // Remove leading character's contribution
+                long long toRemove = (s2[i] * h) % M;
+                textHash = (textHash - toRemove + M) % M;
+
+                // Shift the hash to the left
+                textHash = (textHash * N) % M;
+
+                // Add the trailing character
+                textHash = (textHash + s2[i + n1]) % M;
+            }
+        }
+
+        return false;
+    }
+};
