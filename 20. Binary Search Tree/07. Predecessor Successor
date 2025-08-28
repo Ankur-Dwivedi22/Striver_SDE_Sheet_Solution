@@ -1,0 +1,51 @@
+/* BST Node
+class Node
+{
+   public:
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int x){
+        data = x;
+        left = NULL;
+        right = NULL;
+    }
+}; */
+
+class Solution {
+  public:
+    vector<Node*> findPreSuc(Node* root, int key) {
+        // code here
+        vector<Node*> ans;
+        Node* curr = root;
+        Node* pre = NULL;
+        Node* succ = NULL;
+        
+        while(curr != NULL){
+            if(curr->data >= key){
+                curr = curr->left;
+            }
+            else{
+                pre = curr;
+                curr = curr->right;
+            }
+        }
+        ans.push_back(pre);
+        
+        curr = root;
+        while(curr != NULL){
+            if(curr->data <= key){
+                curr = curr->right;
+            }
+            else{
+                succ = curr;
+                curr = curr->left;
+            }
+        }
+        ans.push_back(succ);
+        
+        return ans;
+        
+    }
+};
