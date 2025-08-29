@@ -1,0 +1,21 @@
+// Function to search a node in BST.
+class Solution {
+
+  public:
+    int floor(Node* root, int x) {
+        // Code here
+        int ans = -1;
+        Node* curr = root;
+        while(curr != NULL){
+            if(curr->data <= x){
+               ans = curr->data;
+               curr = curr->right;
+            }
+            else{
+                curr = curr->left;
+            }
+        }
+        
+        return ans;
+    }
+};
