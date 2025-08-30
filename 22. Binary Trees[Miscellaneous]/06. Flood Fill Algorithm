@@ -1,0 +1,39 @@
+class Solution {
+public:
+    bool isValid(int r, int c, int m, int n){
+        return (r >= 0 && r < m && c >= 0 && c < n);
+    }
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        int m = image.size() , n = image[0].size();
+        int orgColor = image[sr][sc];
+
+        vector<vector<int>> vis(m, vector<int>(n, 0));
+        queue<pair<int,int>> q;
+        q.push({sr,sc});
+        vis[sr][sc] = 1;
+        image[sr][sc] = color;
+
+        vector<int> dr = {0,-1,0,+1};
+        vector<int> dc = {-1,0,+1,0};
+
+        while(!q.empty()){
+            auto it = q.front();
+            q.pop();
+            int r = it.first;
+            int c = it.second;
+
+            for(int i=0; i<4; i++){
+                int nr = r + dr[i];
+                int nc = c + dc[i];
+
+                if(isValid(nr,nc,m,n) && !vis[nr][nc] && image[nr][nc] == orgColor){
+                    vis[nr][nc] = 1;
+                    image[nr][nc] = color;
+                    q.push({nr,nc});
+                }
+            }
+        }
+
+        return image;
+    }
+};
