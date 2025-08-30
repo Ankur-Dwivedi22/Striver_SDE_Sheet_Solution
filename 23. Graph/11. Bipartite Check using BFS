@@ -1,0 +1,41 @@
+class Solution {
+public:
+    bool bfs(int src, int col, vector<vector<int>> &adj, vector<int> &color){
+        queue<pair<int,int>> q;
+        q.push({src, col});
+
+        color[src] = col;
+
+        while(!q.empty()){
+            auto it = q.front();
+            q.pop();
+            int node = it.first;
+            int colNode = it.second;
+
+            for(int adjNode : adj[node]){
+                if(color[adjNode] == -1){
+                    q.push({adjNode, !colNode});
+                    color[adjNode] = !colNode;
+                }
+                else if(color[adjNode] == colNode){
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+    bool isBipartite(vector<vector<int>>& graph) {
+        int n = graph.size();
+        vector<int> color(n, -1);
+
+        for(int i=0; i<n; i++){
+            if(color[i] == -1){
+                if(!bfs(i, 0, graph, color))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+};
