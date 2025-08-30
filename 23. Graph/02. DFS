@@ -1,0 +1,19 @@
+class Solution {
+  public:
+    void dfsTraversal(int node, vector<int> &vis, vector<int> &ans, vector<vector<int>> &adj){
+        vis[node] = 1;
+        ans.push_back(node);
+        for(auto adjNode : adj[node]){
+            if(!vis[adjNode]){
+                dfsTraversal(adjNode, vis, ans, adj);
+            }
+        }
+    }
+    vector<int> dfs(vector<vector<int>>& adj) {
+        // Code here
+        int n = adj.size();
+        vector<int> vis(n, 0) , ans;
+        dfsTraversal(0, vis, ans, adj);
+        return ans;
+    }
+};
