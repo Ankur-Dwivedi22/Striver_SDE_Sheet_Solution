@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        int n = coins.size();
+        vector<int> prev(amount+1, 0) , curr(amount+1, 0);
+        for(int sum = 0; sum <= amount; sum++){
+            if(sum % coins[0] == 0){
+                curr[sum] = prev[sum] = (sum / coins[0]);
+            }
+            else{
+                curr[sum] = prev[sum] = 1e9;
+            }
+        }
+        
+        for(int ind=1; ind<=n-1; ind++){
+            for(int sum = 0; sum <= amount; sum++){
+                int notPick = 0 + prev[sum];
+                int pick = 1e9;
+                if(coins[ind] <= sum){
+                    pick = 1 + curr[sum - coins[ind]];
+                }
+
+                curr[sum] = min(pick, notPick);
+            }
+            prev = curr;
+        }
+        int ans = prev[amount];
+        return (ans >= 1e9 ? -1 : ans);
+    }
+};
