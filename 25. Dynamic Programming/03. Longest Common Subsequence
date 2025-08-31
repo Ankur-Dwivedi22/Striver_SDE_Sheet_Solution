@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int lcs(int ind1, int ind2, string &s1, string &s2, vector<vector<int>> &dp){
+        if(ind1 == s1.size() || ind2 == s2.size()){
+            return 0;
+        }
+
+        if(dp[ind1][ind2] != -1) return dp[ind1][ind2];
+
+        int notPick = 0 + max(lcs(ind1, ind2+1, s1, s2, dp) , lcs(ind1+1, ind2, s1, s2, dp));
+        int pick = 0;
+        if(s1[ind1] == s2[ind2]){
+            pick = 1 + lcs(ind1+1, ind2+1, s1, s2, dp);
+        }
+
+        return dp[ind1][ind2] = max(pick, notPick);
+    }
+    int longestCommonSubsequence(string text1, string text2) {
+        vector<vector<int>> dp(text1.size(), vector<int>(text2.size(), -1));
+        return lcs(0,0,text1,text2,dp);
+    }
+};
