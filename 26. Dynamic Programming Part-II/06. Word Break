@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool f(int ind, string &s, unordered_map<string,int> &mp, vector<int> &dp){
+        if(ind == s.size()){
+            return true;
+        }
+        if(mp[s]) return true;
+
+        if(dp[ind] != -1) return dp[ind];
+
+        for(int l=1; l<=s.size(); l++){
+            if(mp[s.substr(ind, l)] && f(ind+l, s, mp, dp)){
+                return dp[ind] = true;
+            }
+        }
+
+        return dp[ind] = false;
+    }
+    bool wordBreak(string s, vector<string>& wordDict) {
+        unordered_map<string,int> mp;
+        for(string word : wordDict){
+            mp[word]++;
+        }
+        int n = s.size();
+        vector<int> dp(n+1, -1);
+        return f(0,s,mp,dp);
+    }
+};

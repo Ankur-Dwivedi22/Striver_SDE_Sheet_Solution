@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int findNextInd(vector<vector<int>> &arr, int val){
+        int n = arr.size();
+        int lo = 0 , hi = n-1, ans = n;
+        while(lo <= hi){
+            int mid = lo + (hi-lo)/2;
+            if(arr[mid][0] >= val){
+                ans = mid;
+                hi = mid-1;
+            }
+            else{
+                lo = mid+1;
+            }
+        }
+        return ans;
+    }
+    int f(int ind, vector<vector<int>> &arr, vector<int> &dp){
+        if(ind == arr.size()){
+            return 0;
+        }
+
+        if(dp[ind] != -1) return dp[ind];
+
+        int nextInd = findNextInd(arr, arr[ind][1]); 
+        int take = arr[ind][2] + f(nextInd, arr, dp);
+        int notTake = f(ind+1, arr, dp);
+
+        return dp[ind] = max(take, notTake);
+    }
+    int jobScheduling(vector<int>& st, vector<int>& et, vector<int>& p) {
+        int n = st.size();
+        vector<vector<int>> arr;
+
+        for(int i=0; i<n; i++){
+            arr.push_back({st[i] , et[i], p[i]});
+        }
+
+        sort(arr.begin(),arr.end());
+        vector<int> dp(n, -1);
+        return f(0, arr, dp);
+    }
+};
