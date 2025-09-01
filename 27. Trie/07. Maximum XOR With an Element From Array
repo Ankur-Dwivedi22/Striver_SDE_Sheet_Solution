@@ -1,0 +1,95 @@
+class Solution {
+public:
+    struct TrieNode{
+        TrieNode* left;
+        TrieNode* right;
+    };
+
+    TrieNode* createNode(){
+        TrieNode* newNode = new TrieNode();
+        newNode->left = NULL;
+        newNode->right = NULL;
+
+        return newNode;
+    }
+
+    void insert(TrieNode* root, int n){
+        TrieNode* crawler = root;
+
+        for(int i=31; i>=0; i--){
+            int ithBit = (n >> i) & 1;
+            if(ithBit == 1){
+                if(crawler->right == NULL){
+                    crawler->right = createNode();
+                }
+                crawler = crawler->right;
+            }
+            else{
+                if(crawler->left == NULL){
+                    crawler->left = createNode();
+                }
+                crawler = crawler->left;
+            }
+        }
+    }
+
+    int findMaxXOR(TrieNode* root, int x){
+        int mx = 0;
+        TrieNode* crawler = root;
+
+        for(int i=31; i>=0; i--){
+            int ithBit = (x >> i) & 1;
+            if(ithBit == 1){
+                if(crawler->left){
+                    mx += (1 << i);
+                    crawler = crawler->left;
+                }
+                else{
+                    crawler = crawler->right;
+                }
+            }
+            else{
+                if(crawler->right){
+                    mx += (1 << i);
+                    crawler = crawler->right;
+                }
+                else{
+                    crawler = crawler->left;
+                }
+            }
+        }
+
+        return mx;
+    }
+
+    vector<int> maximizeXor(vector<int>& nums, vector<vector<int>>& queries) {
+        vector<vector<int>> sortedQ;
+        int n = nums.size() , q = queries.size();
+        for(int i=0; i<q; i++){
+            //{m , x, i}
+            sortedQ.push_back({queries[i][1] , queries[i][0], i});
+        }
+
+        sort(sortedQ.begin() , sortedQ.end());
+        sort(nums.begin(), nums.end());
+        vector<int> ans(q);
+        TrieNode* root = createNode();
+        int i = 0;
+
+        for(int j=0; j<q; j++){
+            int m = sortedQ[j][0];
+            int x = sortedQ[j][1];
+            int ind = sortedQ[j][2];
+
+            while(i < n && nums[i] <= m){
+                insert(root, nums[i]);
+                i++;
+            }
+
+            if(i == 0) ans[ind] = -1;
+            else ans[ind] = findMaxXOR(root, x);
+        }
+
+        return ans;
+    }
+};

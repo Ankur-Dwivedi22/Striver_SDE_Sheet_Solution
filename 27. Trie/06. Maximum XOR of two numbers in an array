@@ -1,0 +1,71 @@
+class Solution {
+public:
+    struct TrieNode{
+        TrieNode* left;
+        TrieNode* right;
+    };
+
+    TrieNode* createNode(){
+        TrieNode* root = new TrieNode();
+        root->left = NULL;
+        root->right = NULL;
+        return root;
+    }
+
+    void insert(TrieNode* root, int n){
+        TrieNode* crawler = root;
+        
+        for(int i=31; i>=0; i--){
+            int ithBit = (n >> i) & 1;
+            if(ithBit == 1){
+                if(crawler->right == NULL){
+                    crawler->right = createNode();
+                }
+                crawler = crawler->right;
+            }
+            else{
+                if(crawler->left == NULL){
+                    crawler->left = createNode();
+                }
+                crawler = crawler->left;
+            }
+        }
+    }
+
+    int findMaximumXOR(vector<int>& nums) {
+        TrieNode* root = createNode();
+
+        for(int n : nums){
+            insert(root, n);
+        }
+        int mx = 0;
+        for(int n : nums){
+            TrieNode* crawler = root;
+            int xr = 0;
+            for(int i=31; i>=0; i--){
+                int ithBit = (n >> i) & 1;
+                if(ithBit == 1){
+                    if(crawler->left){
+                        xr += (1 << i);
+                        crawler = crawler->left;
+                    }
+                    else{
+                        crawler = crawler->right;
+                    }
+                }
+                else{
+                    if(crawler->right){
+                        xr += (1 << i);
+                        crawler = crawler->right;
+                    }
+                    else{
+                        crawler = crawler->left;
+                    }
+                }
+            }
+            mx = max(mx , xr);
+        }
+
+        return mx;
+    }
+};
