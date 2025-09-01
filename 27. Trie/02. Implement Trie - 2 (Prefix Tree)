@@ -1,0 +1,107 @@
+#include <bits/stdc++.h>
+class Trie {
+	public:
+        struct TrieNode{
+            bool endOfWord;
+            string word;
+            int ct;
+            int endCt;
+            TrieNode* children[26];
+        };
+
+        TrieNode* createNode(){
+            TrieNode* newNode = new TrieNode();
+            newNode->endOfWord = false;
+            newNode->word = "";
+            newNode->ct = 0;
+            newNode->endCt = 0;
+
+            for(int i=0; i<26; i++){
+                newNode->children[i] = NULL;
+            }
+
+            return newNode;
+        }
+
+        TrieNode* root;
+
+	    Trie() {
+            root = createNode();
+	    }
+
+	    void insert(string word) {
+	        TrieNode* crawler = root;
+
+            for(char c : word){
+                if(crawler->children[c-'a'] == NULL){
+                    crawler->children[c-'a'] = createNode();
+                }
+                crawler = crawler->children[c-'a'];
+                crawler->ct++;
+            }
+
+            crawler->endOfWord = true;
+            crawler->word = word;
+            crawler->endCt++;
+    	}
+
+	    int countWordsEqualTo(string word) {
+	        TrieNode* crawler = root;
+
+            for(char c : word){
+                if(crawler->children[c-'a'] == NULL){
+                    return 0;
+                }
+                crawler = crawler->children[c-'a'];
+                if(crawler->ct == 0){
+                    return 0;
+                }
+            }
+
+            if(crawler->endOfWord == true && crawler->word == word){
+                return crawler->endCt;
+            }
+
+            return 0;
+    	}
+
+	    int countWordsStartingWith(string word) {
+	        TrieNode* crawler = root;
+
+            for(char c : word){
+                if(crawler->children[c-'a'] == NULL){
+                    return 0;
+                }
+                crawler = crawler->children[c-'a'];
+                if(crawler->ct == 0){
+                    return 0;
+                }
+            }
+
+            
+            return crawler->ct;
+
+    	}
+
+	    void erase(string word) {
+	        TrieNode* crawler = root;
+
+            for(char c : word){
+                if(crawler->children[c-'a'] == NULL){
+                    return;
+                }
+                crawler = crawler->children[c-'a'];
+                crawler->ct--;
+            }
+            crawler->endCt--;
+	    }
+};
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie* obj = new Trie();
+ * obj->insert(word);
+ * int param_2 = obj->countWordsEqualTo(word);
+ * int param_3 = obj->countWordsStartingWith(prefix);
+ * obj->erase(word);
+ */

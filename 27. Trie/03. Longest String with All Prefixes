@@ -1,0 +1,69 @@
+class Solution {
+  public:
+    struct TrieNode{
+        bool endOfWord;
+        string word;
+        TrieNode* child[26];
+    };
+    
+    TrieNode* createNode(){
+        TrieNode* newNode = new TrieNode();
+        newNode->endOfWord = false;
+        newNode->word = "";
+        
+        for(int i=0; i<26; i++){
+            newNode->child[i] = NULL;
+        }
+        
+        return newNode;
+    }
+    
+    void insert(TrieNode* root, string &word){
+        TrieNode* crawler = root;
+        
+        for(char c : word){
+            if(crawler->child[c-'a'] == NULL){
+                crawler->child[c-'a'] = createNode();
+            }
+            crawler = crawler->child[c-'a'];
+        }
+        
+        crawler->endOfWord = true;
+        crawler->word = word;
+    }
+    
+    bool checkPrefixValid(TrieNode* root, string &word){
+        TrieNode* crawler = root;
+        for(char c : word){
+            if(crawler->child[c-'a'] == NULL){
+                return false;
+            }
+            crawler = crawler->child[c-'a'];
+            if(!crawler->endOfWord) return false;
+        }
+        return true;
+    }
+    
+    string longestString(vector<string> &words) {
+        // code here
+        TrieNode* root = createNode();
+        
+        for(string &word : words){
+            insert(root, word);
+        }
+        
+        string ans = "";
+        for(string &word : words){
+            if(checkPrefixValid(root, word)){
+                if(word.size() > ans.size()){
+                    ans = word;
+                }
+                else if(word.size() == ans.size() && word < ans){
+                    ans = word;
+                }
+            }
+        }
+        
+        return ans;
+    }
+};

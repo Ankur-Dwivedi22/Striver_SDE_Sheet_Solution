@@ -1,0 +1,74 @@
+class Trie {
+public:
+    struct TrieNode{
+        bool endOfWord;
+        string word;
+        TrieNode* child[26];
+    };
+
+    TrieNode* root;
+
+    Trie() {
+        root = createNode();
+    }
+    
+    TrieNode* createNode(){
+        TrieNode* newNode = new TrieNode();
+        newNode->endOfWord = false;
+        newNode->word = "";
+
+        for(int i=0; i<26; i++){
+            newNode->child[i] = NULL;
+        }
+
+        return newNode;
+    }
+
+    void insert(string word) {
+        TrieNode* crawler = root;
+
+        for(char c : word){
+            if(crawler->child[c-'a'] == NULL){
+                crawler->child[c-'a'] = createNode();
+            }
+            crawler = crawler->child[c-'a'];
+        }
+
+        crawler->endOfWord = true;
+        crawler->word = word;
+    }
+    
+    bool search(string word) {
+        TrieNode* crawler = root;
+
+        for(char c : word){
+            if(crawler->child[c-'a'] == NULL){
+                return false;
+            }
+            crawler = crawler->child[c-'a'];
+        }
+
+        return (crawler->endOfWord == true);
+    }
+    
+    bool startsWith(string prefix) {
+        TrieNode* crawler = root;
+
+        for(char c : prefix){
+            if(crawler->child[c-'a'] == NULL){
+                return false;
+            }
+            crawler = crawler->child[c-'a'];
+        }
+
+        return true;
+    }
+};
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie* obj = new Trie();
+ * obj->insert(word);
+ * bool param_2 = obj->search(word);
+ * bool param_3 = obj->startsWith(prefix);
+ */
