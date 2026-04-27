@@ -1,4 +1,5 @@
-<img width="1902" height="849" alt="image" src="https://github.com/user-attachments/assets/89e0608a-038c-43bd-b639-aea238681c20" />
+<img width="1905" height="843" alt="image" src="https://github.com/user-attachments/assets/3b5b080f-1077-412d-a9b2-8562f85a9036" />
+
 
 # 📘 Striver SDE Sheet Solutions
 
