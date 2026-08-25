@@ -14,3 +14,25 @@ public:
         return ans;
     }
 };
+
+// Approach 2
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int n = nums.size();
+        int mxp = nums[0], mnp = nums[0];
+        int ans = nums[0];
+        for(int i=1; i<n; i++){
+            int x = nums[i];
+            if(x < 0){
+                swap(mxp, mnp);
+            }
+
+            mxp = max(x, mxp * x);
+            mnp = min(x, mnp * x);
+            ans = max(ans, mxp);
+        }
+
+        return ans;
+    }
+};
