@@ -1,3 +1,6 @@
+// Approach : DP
+// TC : O(N * N)
+// SC : O(N * N)
 class Solution {
 public:
     int f(int ind, int prev, vector<int> &nums, vector<vector<int>> &dp){
@@ -23,7 +26,9 @@ public:
 };
 
 
-//O(nlogn)
+//Approach : Binary Search
+// TC : O(N * logN)
+// SC : O(N)
 
 class Solution {
 public:
