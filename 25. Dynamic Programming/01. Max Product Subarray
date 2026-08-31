@@ -1,3 +1,4 @@
+// Approach 1 : Prefix Suffix
 class Solution {
 public:
     int maxProduct(vector<int>& nums) {
