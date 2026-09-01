@@ -1,24 +1,126 @@
+// Approach : Memoisation
+// TC : O(N * N)
+// SC : O(N * N) + O(N)
+
 class Solution {
   public:
-    int f(int ind, int prev, vector<int> &arr, vector<vector<int>> &dp){
+    int solve(int ind, int prev, vector<int> &arr, vector<vector<int>> &dp){
         if(ind == arr.size()){
             return 0;
+        }   
+        
+        if(dp[ind][prev] != -1) return dp[ind][prev];
+        
+        int skip = 0 + solve(ind+1, prev, arr, dp);
+        int pick = 0;
+        if(prev == arr.size()){
+            pick = arr[ind] + solve(ind+1, ind, arr, dp);
+        }
+        else if(arr[ind] > arr[prev]){
+            pick = arr[ind] + solve(ind+1, ind, arr, dp);
         }
         
-        if(dp[ind][prev+1] != -1) return dp[ind][prev+1];
-        
-        int notTake = 0 + f(ind+1, prev, arr, dp);
-        int take = 0;
-        if(prev == -1 || arr[ind] > arr[prev]){
-            take = arr[ind] + f(ind+1, ind, arr, dp);
-        }
-        
-        return dp[ind][prev+1] = max(take, notTake);
+        return dp[ind][prev] = max(pick, skip);
     }
+    
     int maxSumIS(vector<int>& arr) {
-        // Your code goes here
+        // code here
         int n = arr.size();
-        vector<vector<int>> dp(n, vector<int> (n+1, -1));
-        return f(0, -1, arr, dp);
+        vector<vector<int>> dp(n+1, vector<int>(n+1, -1));
+        return solve(0, n, arr, dp);
+    }
+};
+
+// Approach : Tabulation
+// TC : O(N * N)
+// SC : O(N * N)
+
+class Solution {
+	public:
+	int maxSumIS(vector<int>& arr) {
+		// code here
+		int n = arr.size();
+		vector<vector<int>> dp(n + 1, vector<int>(n + 1, 0));
+		
+		for (int ind = n - 1; ind >= 0; ind--) {
+			for (int prev = 0; prev <= n; prev++) {
+				int skip = 0 + dp[ind+1][prev];
+				int pick = 0;
+				if (prev == n) {
+					pick = arr[ind] + dp[ind+1][ind];
+				}
+				else if (arr[ind] > arr[prev]) {
+					pick = arr[ind] + dp[ind+1][ind];
+				}
+				
+				dp[ind][prev] = max(pick, skip);
+			}
+		}
+		return dp[0][n];
+	}
+};
+
+// Approach : Space Optimisation
+// TC : O(N * N)
+// SC : O(N)
+
+class Solution {
+	public:
+	int maxSumIS(vector<int>& arr) {
+		// code here
+		int n = arr.size();
+		vector<int> dp(n + 1, 0), curr(n+1, 0);
+		
+		for (int ind = n - 1; ind >= 0; ind--) {
+			for (int prev = 0; prev <= n; prev++) {
+				int skip = 0 + dp[prev];
+				int pick = 0;
+				if (prev == n) {
+					pick = arr[ind] + dp[ind];
+				}
+				else if (arr[ind] > arr[prev]) {
+					pick = arr[ind] + dp[ind];
+				}
+				
+				curr[prev] = max(pick, skip);
+			}
+			dp = curr;
+		}
+		return dp[n];
+	}
+};
+
+// Approach : Map with pruning
+// TC : O(N * logN)
+// SC : O(N)
+
+class Solution {
+  public:
+    int maxSumIS(vector<int>& arr) {
+        // code here
+        map<int,int> dp;
+        int ans = 0;
+        for(int val : arr){
+            auto it = dp.lower_bound(val);
+            int bestSmall = 0;
+            if(it != dp.begin()){
+                it--;
+                bestSmall = it->second;
+            }
+            
+            int currSum = val + bestSmall;
+            if(dp[val] < currSum){
+                dp[val] = currSum;
+                
+                auto higher = dp.upper_bound(val);
+                while(higher != dp.end() && higher->second <= currSum){
+                    higher = dp.erase(higher);
+                }
+            }
+            
+            ans = max(ans, currSum);
+        }
+        
+        return ans;
     }
 };
