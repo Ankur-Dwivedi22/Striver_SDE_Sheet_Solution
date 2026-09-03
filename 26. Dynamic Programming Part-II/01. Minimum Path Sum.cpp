@@ -1,3 +1,39 @@
+// Constructing minimum path
+class Solution {
+public:
+    int minPathSum(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<int>> dp(m, vector<int>(n, 0));
+        dp[0][0] = grid[0][0];
+
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(i == 0 && j == 0) continue;
+                int up = 1e9, left = 1e9;
+                if(i-1 >= 0) up = grid[i][j] + dp[i-1][j];
+                if(j-1 >= 0) left = grid[i][j] + dp[i][j-1];
+                dp[i][j] = min(up, left);
+            }
+        }
+
+        vector<int> path;
+        int i = m-1, j = n-1;
+        while(i != 0 || j != 0){
+            path.push_back(grid[i][j]);
+            if(i == 0) j--;
+            else if(j == 0) i--;
+            else if(dp[i-1][j] < dp[i][j-1]) i--;
+            else j--;
+        }
+        path.push_back(grid[0][0]);
+        reverse(path.begin(), path.end());
+        for(int p : path){
+            cout<<p<<" ";
+        }
+        return dp[m-1][n-1];
+    }
+};
+
 // Approach : Memoisation
 // TC : O(M * N)
 // SC : O(M * N) + O(M + N)
