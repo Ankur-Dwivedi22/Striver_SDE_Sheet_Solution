@@ -1,3 +1,5 @@
+// TC : O(2 ^ N * N ^ 2)
+// SC : O(N)
 class Solution {
 public:
     bool palindrome(string &s){
