@@ -60,3 +60,34 @@ public:
     }
 };
 
+// Optimised DP
+// TC : O(N * L^2)
+// SC : O(N) + O(N)
+
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        int n = s.size();
+        unordered_map<string, int> mp;
+        int mxlen = 0;
+        for(string &word : wordDict){
+            mp[word]++;
+            mxlen = max(mxlen, (int)word.size());
+        }
+
+        vector<bool> dp(n+1, 0);
+        dp[0] = 1;
+        
+        for(int i=1; i<=n; i++){
+            for(int len=1; len<=i && len<=mxlen; len++){
+                if(dp[i-len] && mp[s.substr(i-len, len)]){
+                    dp[i] = 1;
+                    break;
+                }
+            }
+        }
+
+        return dp[n];
+    }
+};
+
