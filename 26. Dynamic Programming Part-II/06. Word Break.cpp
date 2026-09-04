@@ -91,3 +91,66 @@ public:
     }
 };
 
+// DP + Trie
+// TC : O(N * L)
+// SC : O(N + T)
+
+class Trie {
+public:
+    bool isEnd;
+    Trie* children[26];
+
+    Trie() {
+        isEnd = false;
+        for (int i = 0; i < 26; i++) {
+            children[i] = nullptr;
+        }
+    }
+
+    void insert(Trie* root, string &s){
+        Trie* node = root;
+        for(char c : s){
+            int ind = c - 'a';
+            if(node->children[ind] == nullptr){
+                node->children[ind] = new Trie();
+            }
+            node = node->children[ind];
+        }
+        node->isEnd = true;
+    }
+};
+
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        int n = s.size();
+        vector<bool> dp(n + 1, 0);
+        dp[0] = 1;
+
+        Trie* root = new Trie();
+
+        for(string &word : wordDict){
+            root->insert(root, word);
+        }
+
+        for(int i=0; i<n; i++){
+            if(dp[i] == 0) continue;
+            Trie* curr = root;
+            for(int j=i; j<n; j++){
+                int ind = s[j] - 'a';
+                if(curr->children[ind] == nullptr){
+                    break;
+                }
+
+                curr = curr->children[ind];
+                if(curr->isEnd){
+                    dp[j+1] = 1;
+                }
+            }
+        }
+
+        return dp[n];
+    }
+};
+
+
