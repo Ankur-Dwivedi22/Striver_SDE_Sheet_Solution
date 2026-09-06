@@ -1,3 +1,6 @@
+// TC : O(V + 2*E)
+// SC : O(V) + O(V)
+
 class Solution {
   public:
     bool bfs(int node, vector<int> &vis, vector<vector<int>> &adj){
