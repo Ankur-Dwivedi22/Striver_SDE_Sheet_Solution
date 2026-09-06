@@ -1,3 +1,6 @@
+// TC : O(V + E) every vertex and edge is checked once
+// SC : O(V)
+
 class Solution {
   public:
     void dfsTraversal(int node, vector<int> &vis, vector<int> &ans, vector<vector<int>> &adj){
