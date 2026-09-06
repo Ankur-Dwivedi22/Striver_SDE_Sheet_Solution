@@ -1,3 +1,6 @@
+// TC : O(V + E)
+// SC : O(V) + O(V)
+
 class Solution {
   public:
     bool dfs(int node, int parent, vector<vector<int>> &adj, vector<int> &vis){
