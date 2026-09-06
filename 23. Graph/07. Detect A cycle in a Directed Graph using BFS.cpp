@@ -1,3 +1,7 @@
+// Kahn's Algorithm
+// TC : O(V + E)
+// SC : O(V + E)
+
 class Solution {
 public:
     bool canFinish(int n, vector<vector<int>>& pre) {
