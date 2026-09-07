@@ -1,3 +1,5 @@
+// TC : O(V + 2E)
+// SC : O(V)
 class Solution {
 public:
     bool bfs(int src, int col, vector<vector<int>> &adj, vector<int> &color){
