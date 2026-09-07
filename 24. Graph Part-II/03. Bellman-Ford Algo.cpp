@@ -1,4 +1,5 @@
-// User function Template for C++
+// TC : O(V * E)
+// SC : O(V)
 
 class Solution {
   public:
