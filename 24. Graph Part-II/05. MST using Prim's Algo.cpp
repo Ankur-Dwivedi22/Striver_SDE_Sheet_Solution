@@ -1,3 +1,6 @@
+// TC : O(E * logE)
+// SC : O(V + E)
+
 class Solution {
   public:
     int spanningTree(int V, vector<vector<int>>& edges) {
