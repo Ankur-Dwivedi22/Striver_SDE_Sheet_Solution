@@ -1,3 +1,6 @@
+// TC : O(M * N)
+// SC : O(M * N)
+
 class Solution {
 public:
     void bfs(int i, int j, vector<vector<char>> &grid, vector<vector<int>> &vis, int m, int n){
