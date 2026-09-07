@@ -1,4 +1,5 @@
-// User Function Template
+// TC : O(E * logV)
+// SC : O(E + V)
 class Solution {
   public:
     vector<int> dijkstra(int V, vector<vector<int>> &edges, int src) {
@@ -21,6 +22,7 @@ class Solution {
             
             int node = it.second;
             int d = it.first;
+            if(d > dist[node]) continue;
             
             for(auto neighbor : adj[node]){
                 int adjNode = neighbor.first;
