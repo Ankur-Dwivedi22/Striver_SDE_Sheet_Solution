@@ -1,3 +1,5 @@
+// TC : O(V + E)
+// SC : O(V + E)
 class Solution {
   public:
     void dfs(int node, vector<vector<int>> &adj, vector<int> &vis, stack<int> &st){
