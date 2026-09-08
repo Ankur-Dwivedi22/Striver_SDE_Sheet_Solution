@@ -1,3 +1,6 @@
+// TC : O(E * logE) + O(E * 4 * alpha * 2)
+// SC : O(V)
+
 class DSU{
   public:
     vector<int> parent , rank , size;
